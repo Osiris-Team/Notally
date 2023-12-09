@@ -26,12 +26,13 @@ class Preferences private constructor(app: Application) {
 
     val autoBackup = BetterLiveData(getTextPref(AutoBackup))
 
+    val isHideLabels = BetterLiveData(getListPref(IsHideLabels))
+
     private fun getListPref(info: ListInfo) = requireNotNull(preferences.getString(info.key, info.defaultValue))
 
     private fun getTextPref(info: TextInfo) = requireNotNull(preferences.getString(info.key, info.defaultValue))
 
     private fun getSeekbarPref(info: SeekbarInfo) = requireNotNull(preferences.getInt(info.key, info.defaultValue))
-
 
     fun getWidgetData(id: Int) = preferences.getLong("widget:$id", 0)
 
@@ -84,6 +85,7 @@ class Preferences private constructor(app: Application) {
             Theme -> theme.postValue(getListPref(info))
             DateFormat -> dateFormat.postValue(getListPref(info))
             TextSize -> textSize.postValue(getListPref(info))
+            IsHideLabels -> isHideLabels.postValue(getListPref(info))
         }
     }
 

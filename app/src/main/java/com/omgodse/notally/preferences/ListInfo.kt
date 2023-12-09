@@ -41,6 +41,25 @@ object View : ListInfo {
     }
 }
 
+sealed interface BooleanInfo : ListInfo {
+    override fun getEntryValues() = arrayOf("true", "false")
+
+    override fun getEntries(context: Context): Array<String> {
+        val ids = arrayOf(R.string._true, R.string._false)
+        return convertToValues(ids, context)
+    }
+}
+
+object IsHideLabels : BooleanInfo{
+    val _true = "true"
+    val _false = "false"
+
+    override val title = R.string.is_hide_labels
+    override val key = "isHideLabels"
+    override val defaultValue = _false
+
+}
+
 object Theme : ListInfo {
     const val dark = "dark"
     const val light = "light"

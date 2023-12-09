@@ -45,6 +45,10 @@ class Settings : Fragment() {
             binding.TextSize.setup(TextSize, value)
         }
 
+        model.preferences.isHideLabels.observe(viewLifecycleOwner) { value ->
+            binding.IsHideLabels.setup(IsHideLabels, value)
+        }
+
 
         binding.MaxItems.setup(MaxItems, model.preferences.maxItems)
 
@@ -188,6 +192,10 @@ class Settings : Fragment() {
                 .setNegativeButton(R.string.cancel, null)
                 .show()
         }
+    }
+
+    private fun PreferenceBinding.setup(info: ListInfo, value: Boolean) {
+        setup(info, ""+value)
     }
 
     private fun PreferenceBinding.setup(info: AutoBackup, value: String) {

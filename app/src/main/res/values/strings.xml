@@ -103,6 +103,10 @@
     <string name="max_items_to_display">Max items to display in list</string>
     <string name="max_lines_to_display">Max lines to display in note</string>
 
+    <string name="_true">True</string>
+    <string name="_false">False</string>
+    <string name="is_hide_labels">Hide Labels</string>
+
     <string name="backup">Backup</string>
 
     <!-- Auto backup -->

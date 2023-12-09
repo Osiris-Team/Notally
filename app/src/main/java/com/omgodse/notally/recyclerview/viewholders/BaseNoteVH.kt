@@ -1,5 +1,6 @@
 package com.omgodse.notally.recyclerview.viewholders
 
+import android.app.Application
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
@@ -11,6 +12,7 @@ import com.omgodse.notally.databinding.RecyclerBaseNoteBinding
 import com.omgodse.notally.miscellaneous.Operations
 import com.omgodse.notally.miscellaneous.applySpans
 import com.omgodse.notally.preferences.DateFormat
+import com.omgodse.notally.preferences.Preferences
 import com.omgodse.notally.preferences.TextSize
 import com.omgodse.notally.recyclerview.ItemListener
 import com.omgodse.notally.room.BaseNote
@@ -69,6 +71,12 @@ class BaseNoteVH(
         binding.Title.isVisible = baseNote.title.isNotEmpty()
 
         Operations.bindLabels(binding.LabelGroup, baseNote.labels, textSize)
+        val application = binding.root.context.applicationContext as Application
+        val preferences = Preferences.getInstance(application)
+        if(preferences.isHideLabels.value == "true"){
+            binding.LabelGroup.visibility = View.GONE
+        }
+
 
         if (isEmpty(baseNote)) {
             binding.Title.setText(getEmptyMessage(baseNote))
