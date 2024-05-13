@@ -22,7 +22,7 @@ import com.omgodse.notally.viewmodels.BaseNoteModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var configuration: AppBarConfiguration
 
@@ -107,6 +107,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleDestinationChange(destination: NavDestination) {
         if (destination.id == R.id.Notes) {
+            toggleBulkSelectState(false)
             binding.TakeNote.show()
             binding.MakeList.show()
         } else {
@@ -121,6 +122,35 @@ class MainActivity : AppCompatActivity() {
         binding.EnterSearchKeyword.setText(model.keyword)
         binding.EnterSearchKeyword.doAfterTextChanged { text ->
             model.keyword = requireNotNull(text).trim().toString()
+        }
+    }
+
+    var isInBulkEditMode = false
+
+    public fun toggleBulkSelectState(enable: Boolean) {
+        if(enable){
+            if(isInBulkEditMode) return; // Already in this state, thus return
+            isInBulkEditMode = true;
+        } else {
+            if(!isInBulkEditMode) return; // Already in this state, thus return
+            isInBulkEditMode = false;
+        }
+
+        val mainActionButton = binding.TakeNote;
+        val mainActionButtonAlt = binding.TakeNoteAlt;
+        val upperActionButton = binding.MakeList;
+        val upperActionButtonAlt = binding.MakeListAlt;
+
+        if(enable){
+            mainActionButton.visibility = View.GONE;
+            upperActionButton.visibility = View.GONE;
+            mainActionButtonAlt.visibility = View.VISIBLE;
+            upperActionButtonAlt.visibility = View.VISIBLE;
+        } else {
+            mainActionButton.visibility = View.VISIBLE;
+            upperActionButton.visibility = View.VISIBLE;
+            mainActionButtonAlt.visibility = View.GONE;
+            upperActionButtonAlt.visibility = View.GONE;
         }
     }
 }

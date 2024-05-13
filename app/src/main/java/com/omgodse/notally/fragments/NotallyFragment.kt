@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.omgodse.notally.MenuDialog
 import com.omgodse.notally.R
+import com.omgodse.notally.activities.MainActivity
 import com.omgodse.notally.activities.MakeList
 import com.omgodse.notally.activities.TakeNote
 import com.omgodse.notally.databinding.DialogColorBinding
@@ -96,7 +97,19 @@ abstract class NotallyFragment : Fragment(), ItemListener {
         if (position != -1) {
             adapter?.currentList?.get(position)?.let { item ->
                 if (item is BaseNote) {
-                    showOperations(item)
+                    val mainActivity = requireActivity() as MainActivity
+                    var lastDialog: MenuDialog? = null
+                    mainActivity.binding.TakeNoteAlt.setOnClickListener {
+                        lastDialog = showOperations(item)
+                    }
+                    mainActivity.binding.MakeListAlt.setOnClickListener {
+                        lastDialog?.dismiss()
+                        mainActivity.toggleBulkSelectState(false);
+                    }
+                    mainActivity.toggleBulkSelectState(true)
+                    lastDialog = showOperations(item)
+                    // TODO pass over items istead of a single item
+                    // TODO add checkboxes to each note that are only visible when in toggleBulkSelectState(true)
                 }
             }
         }
@@ -136,7 +149,7 @@ abstract class NotallyFragment : Fragment(), ItemListener {
     }
 
 
-    private fun showOperations(baseNote: BaseNote) {
+    private fun showOperations(baseNote: BaseNote): MenuDialog {
         val dialog = MenuDialog(requireContext())
         when (baseNote.folder) {
             Folder.NOTES -> {
@@ -162,6 +175,7 @@ abstract class NotallyFragment : Fragment(), ItemListener {
             }
         }
         dialog.show()
+        return dialog
     }
 
     private fun goToActivity(activity: Class<*>, baseNote: BaseNote) {
